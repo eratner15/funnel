@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Master golf betting with Peel and Eat, the gentleman's guide. Learn games like Nassau, Skins, Wolf, get expert tactics, and use included scorecards. Sign up for launch updates!">
+    <title>Peel and Eat: A Gentleman's Guide to Golf Gambling</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <style type="text/css">@import url("https://assets.mlcdn.com/fonts.css?version=1747053");</style>
+    <style type="text/css">
+    /* General Site Styles */
+    body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+    .font-playfair { font-family: 'Playfair Display', serif; }
+    /* Ensure hero-background.jpg is in an accessible 'images' folder or replace with a full URL */
+    .hero-bg { background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('images/hero-background.jpg'); background-size: cover; background-position: center; }
+    .btn-primary { background-color: #D4AF37; color: #000000; transition: background-color 0.3s ease, transform 0.3s ease; }
+    .btn-primary:hover { background-color: #B8860B; transform: translateY(-2px); }
+    .section-bg-light { background-color: #f8f9fa; }
+    .text-custom-gold { color: #D4AF37; }
+    .bg-custom-navy { background-color: #0A2F51; }
+    .border-custom-gold { border-color: #D4AF37; }
+    .text-custom-navy { color: #0A2F51; }
+    .textured-bg { background-color: #fdfdfd; }
+    .game-card { background-color: #fff; border: 1px solid #e2e8f0; transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; align-items: center; height: 100%; cursor: pointer; }
+    .game-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+    /* Ensure game card images are in an 'images' folder or use full URLs/placeholders */
+    .game-card img.game-card-img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 1rem; border-radius: 0.25rem; }
+    /* Ensure logo.png is in an 'images' folder or use a full URL/placeholder */
+    .nav-logo { height: 40px; width: auto; }
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-content { background-color: #fff; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; max-width: 500px; position: relative; transform: translateY(-50px); transition: transform 0.3s ease; }
+    .modal-overlay.active .modal-content { transform: translateY(0); }
+    .modal-close-btn { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; font-weight: bold; color: #333; cursor: pointer; border: none; background: none; }
+    .modal-close-btn:hover { color: #000; }
+    .modal-title { font-family: 'Playfair Display', serif; color: #0A2F51; }
+    .modal-body p { color: #333; line-height: 1.7; margin-bottom: 1rem; }
+    .modal-cta { font-style: italic; color: #555; font-size: 0.9rem; margin-top: 1.5rem; border-top: 1px solid #eee; padding-top: 1rem; }
+
+    /* Minimal style for the MailerLite embedded div container */
+    .ml-embedded-form-wrapper {
+        margin: 0 auto; /* Center the form */
+        max-width: 500px; /* Adjust as needed */
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+    }
+    /* Add fallback for missing images */
+    img {
+        background-color: #eee; /* Placeholder background */
+        position: relative; /* Needed for pseudo-element positioning */
+    }
+    /* Basic style to show alt text if image fails */
+    img::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background-color: #eee;
+        display: block;
+    }
+    img::after {
+        content: attr(alt);
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #555;
+        text-align: center;
+        padding: 5px;
+        box-sizing: border-box;
+        font-size: 0.8em;
+        max-width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        z-index: 1; /* Ensure text is above placeholder background */
+    }
+    /* Hide pseudo-elements if image loads successfully */
+    img:not([src='']):not([onerror]) {
+       background-color: transparent; /* Hide placeholder background */
+    }
+    img:not([src='']):not([onerror])::before,
+    img:not([src='']):not([onerror])::after {
+        display: none;
+    }
+    /* Specific handling for onerror placeholder */
+    img[onerror] {
+        background-color: #eee; /* Keep background for placeholders */
+    }
+     img[onerror]::before {
+        display: none; /* Hide the general ::before for placeholders */
+    }
+    img[onerror]::after {
+        display: block; /* Ensure alt text shows for placeholders */
+    }
+    /* Hide the broken image icon itself */
+     img[onerror] {
+        font-size: 0; /* Hides the broken image icon text */
+        color: transparent; /* Hides the broken image icon color */
+     }
+     /* Ensure logo doesn't show alt text if it fails */
+     .nav-logo[onerror]::after {
+        display: none;
+     }
+
+    </style>
+</head>
+<body class="bg-gray-100 textured-bg">
+
+    <nav class="bg-custom-navy text-white p-4 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto flex flex-wrap justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-2">
+                <img src="images/logo.png" alt="Peel and Eat Logo" class="nav-logo" onerror="this.style.display='none'; this.onerror=null;">
+                <span class="text-2xl font-playfair text-custom-gold self-end">Peel and Eat</span>
+            </a>
+            <button class="md:hidden text-white focus:outline-none" id="mobile-menu-button" aria-label="Open Menu" aria-expanded="false" aria-controls="mobile-menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+            <div class="hidden md:flex space-x-4 items-center" id="desktop-menu">
+                <a href="#about" class="hover:text-custom-gold transition duration-300 px-2 py-1">About</a>
+                <a href="#games" class="hover:text-custom-gold transition duration-300 px-2 py-1">The Games</a>
+                <a href="#scorecards" class="hover:text-custom-gold transition duration-300 px-2 py-1">Scorecards</a>
+                <a href="#author" class="hover:text-custom-gold transition duration-300 px-2 py-1">Author</a>
+                <a href="#free-scorecard" class="btn-primary font-semibold py-2 px-4 rounded-lg shadow-sm hover:shadow-md ml-2">Get Launch Updates</a>
+            </div>
+        </div>
+        <div class="hidden md:hidden mt-2" id="mobile-menu">
+            <a href="#about" class="block py-2 px-4 hover:bg-gray-700 hover:text-custom-gold rounded">About the Book</a>
+            <a href="#games" class="block py-2 px-4 hover:bg-gray-700 hover:text-custom-gold rounded">The Games</a>
+            <a href="#scorecards" class="block py-2 px-4 hover:bg-gray-700 hover:text-custom-gold rounded">Scorecards</a>
+            <a href="#author" class="block py-2 px-4 hover:bg-gray-700 hover:text-custom-gold rounded">Author</a>
+            <a href="#free-scorecard" class="block py-2 px-4 btn-primary font-semibold rounded-lg shadow-sm hover:shadow-md text-center mt-2">Get Launch Updates</a>
+        </div>
+    </nav>
+
+    <header class="hero-bg text-white py-24 md:py-40">
+        <div class="container mx-auto text-center px-4">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-playfair mb-4 leading-tight">PEEL AND EAT</h1>
+            <p class="text-xl sm:text-2xl md:text-3xl font-playfair mb-6 text-custom-gold">THE GENTLEMAN'S GUIDE TO GOLF BETTING & SCOREKEEPING</p>
+            <p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto">
+                FOR THE PLAYER WHO KNOWS THE REAL SCORE IS KEPT IN THE WALLET... AND ON THE SCORECARD.
+            </p>
+            <a href="#free-scorecard" class="btn-primary text-lg font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl">
+                Get Updates & Scorecard
+            </a>
+        </div>
+    </header>
+
+    <section id="welcome" class="py-16 bg-white">
+        <div class="container mx-auto px-6 md:px-12">
+            <h2 class="text-3xl font-playfair mb-8 text-gray-800 text-center">Welcome to the Club</h2>
+            <p class="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto text-left md:text-justify mb-4">
+                Every Thursday morning, from Palm Beach to Pebble Beach, a sacred ritual unfolds. Four gentlemen gather, glances are exchanged, and someone casually utters: <strong class="text-custom-navy">"So... what are we playing for today?"</strong>
+            </p>
+            <p class="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto text-left md:text-justify mb-4">
+                "Peel and Eat" isn't just golf. It’s financial psychology, tactical warfare, and social engineering wrapped in moisture-wicking polos and soft spikes. This guide peels back the polite veneer of recreational golf to reveal the delicious financial ecosystem underneath. It's for players who understand that a <strong class="text-custom-navy">well-structured wager transforms a casual round into theater.</strong>
+            </p>
+             <p class="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto text-left md:text-justify">
+                Remember: <strong class="text-custom-navy">Structure beats size.</strong> A well-designed twenty-dollar Nassau, meticulously tracked, creates more tension than a clumsy thousand-dollar free-for-all.
+            </p>
+        </div>
+    </section>
+
+    <section id="about" class="py-16 section-bg-light">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/3 text-center">
+                    <img src="images/book-cover.png" alt="Peel and Eat Book Cover" class="mx-auto rounded-lg shadow-2xl w-64 md:w-80 transform hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/320x480/eeeeee/333333?text=Book+Cover'; this.onerror=null;">
+                </div>
+                <div class="md:w-2/3">
+                    <h2 class="text-3xl font-playfair mb-6 text-gray-800">Your Course Companion & Scorecard Collection</h2>
+                    <p class="text-lg text-gray-700 mb-4 leading-relaxed">
+                        "Peel and Eat" is your versatile 7-iron: trustworthy and always in play. This essential guide offers:
+                    </p>
+                    <ul class="list-disc list-inside text-lg text-gray-700 space-y-3 mb-6 leading-relaxed">
+                        <li><strong class="text-custom-navy">Definitive Game Explanations:</strong> Master "The Classics" like Match Play, Nassau, Skins, Wolf, and Vegas, plus engaging "Weekend Warrior Formats."</li>
+                        <li><strong class="text-custom-navy">The Art of War - Advanced Tactics:</strong> Learn sophisticated strategies for pressing, defensive maneuvers, reading opponents, and maintaining the ultimate poker face.</li>
+                        <li><strong class="text-custom-navy">Side Bets & Props Galore:</strong> Dive into Greenies, Sandies, Barkies, Long Drives, and crafting your own custom side action.</li>
+                        <li><strong class="text-custom-navy">The Paperwork - Ready-to-Use Scorecards:</strong> The practical heart of the book! A collection of premium, tear-out scorecards, professionally designed for each game.</li>
+                        <li><strong class="text-custom-navy">Settlement Strategies:</strong> Conclude your wagers with clarity and dignity, ensuring friendships remain intact.</li>
+                    </ul>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        This isn't just a book; it's your <strong class="text-custom-navy">passport to club credibility.</strong> Knowledge and proper documentation are currency in golf betting circles.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="games" class="py-16 bg-white">
+        <div class="container mx-auto px-6 md:px-12">
+            <h2 class="text-3xl font-playfair mb-10 text-center text-gray-800">Explore the Games Within</h2>
+            <p class="text-center text-gray-600 mb-10 -mt-6">Click on a game to learn more!</p>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="game-card p-6 rounded-lg text-center" data-modal-target="nassau-modal">
+                    <img src="images/nassau-icon.png" alt="Nassau Game Icon" class="game-card-img" onerror="this.src='https://placehold.co/100x100/0A2F51/D4AF37?text=Nassau'; this.onerror=null;">
+                    <h3 class="text-2xl font-semibold mb-2 text-custom-navy font-playfair">Nassau</h3>
+                    <p class="text-gray-600 leading-relaxed">The Trinity of Golf Betting. Master the Front, Back, and Overall match with strategic presses.</p>
+                </div>
+                <div class="game-card p-6 rounded-lg text-center" data-modal-target="skins-modal">
+                    <img src="images/skins-icon.png" alt="Skins Game Logo" class="game-card-img" onerror="this.src='https://placehold.co/100x100/0A2F51/D4AF37?text=Skins'; this.onerror=null;">
+                    <h3 class="text-2xl font-semibold mb-2 text-custom-navy font-playfair">Skins</h3>
+                    <p class="text-gray-600 leading-relaxed">Hunger Games for Golfers. Every hole a new battle, with carryovers building the drama.</p>
+                </div>
+                <div class="game-card p-6 rounded-lg text-center" data-modal-target="wolf-modal">
+                     <img src="images/wolf-icon.png" alt="Wolf Game Icon" class="game-card-img" onerror="this.src='https://placehold.co/100x100/0A2F51/D4AF37?text=Wolf'; this.onerror=null;">
+                    <h3 class="text-2xl font-semibold mb-2 text-custom-navy font-playfair">Wolf</h3>
+                    <p class="text-gray-600 leading-relaxed">The Pack Mentality. Shifting allegiances and tactical partner selections on every tee.</p>
+                </div>
+                <div class="game-card p-6 rounded-lg text-center" data-modal-target="vegas-modal">
+                     <img src="images/vegas-icon.png" alt="Vegas Game Icon" class="game-card-img" onerror="this.src='https://placehold.co/100x100/0A2F51/D4AF37?text=Vegas'; this.onerror=null;">
+                    <h3 class="text-2xl font-semibold mb-2 text-custom-navy font-playfair">Vegas</h3>
+                    <p class="text-gray-600 leading-relaxed">High Risk, High Reward. Team play where score pairing creates wild, exhilarating swings.</p>
+                </div>
+                <div class="game-card p-6 rounded-lg text-center" data-modal-target="bingo-bango-bongo-modal">
+                    <img src="images/bingo_bango_bongo-icon.png" alt="Bingo Bango Bongo Icon" class="game-card-img" onerror="this.src='https://placehold.co/100x100/0A2F51/D4AF37?text=BBB'; this.onerror=null;">
+                    <h3 class="text-2xl font-semibold mb-2 text-custom-navy font-playfair">Bingo Bango Bongo</h3>
+                    <p class="text-gray-600 leading-relaxed">Democratic Golf. Three chances to win on every hole, leveling the playing field.</p>
+                </div>
+                <div class="game-card p-6 rounded-lg text-center" data-modal-target="bloodsome-modal">
+                     <img src="images/bloodsome-icon.png" alt="Bloodsome Game Logo" class="game-card-img" onerror="this.src='https://placehold.co/100x100/0A2F51/D4AF37?text=Bloodsome'; this.onerror=null;">
+                    <h3 class="text-2xl font-semibold mb-2 text-custom-navy font-playfair">Bloodsome</h3>
+                    <p class="text-gray-600 leading-relaxed">Strategic Sabotage. Choose your opponent's lie in this devious alternate shot format.</p>
+                </div>
+                <div class="game-card p-6 rounded-lg text-center" data-modal-target="stableford-modal">
+                     <img src="images/stableford-icon.png" alt="Stableford Game Logo" class="game-card-img" onerror="this.src='https://placehold.co/100x100/0A2F51/D4AF37?text=Stableford'; this.onerror=null;">
+                    <h3 class="text-2xl font-semibold mb-2 text-custom-navy font-playfair">Stableford</h3>
+                    <p class="text-gray-600 leading-relaxed">The Anti-Blowup System. Earn points for good scores, minimizing disastrous holes.</p>
+                </div>
+                <div class="game-card p-6 rounded-lg text-center" data-modal-target="banker-modal">
+                    <img src="images/banker-icon.png" alt="Banker/Quota Icon" class="game-card-img" onerror="this.src='https://placehold.co/100x100/0A2F51/D4AF37?text=Banker'; this.onerror=null;">
+                    <h3 class="text-2xl font-semibold mb-2 text-custom-navy font-playfair">Banker/Quota</h3>
+                    <p class="text-gray-600 leading-relaxed">The Quota Challenge. Beat your personal points target in this handicapped favorite.</p>
+                </div>
+                <div class="game-card p-6 rounded-lg text-center" data-modal-target="more-games-modal">
+                    <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="game-card-img">
+                      <rect width="100" height="100" fill="#0A2F51"/>
+                      <rect x="40" y="20" width="20" height="60" fill="#D4AF37"/>
+                      <rect x="20" y="40" width="60" height="20" fill="#D4AF37"/>
+                    </svg>
+                    <h3 class="text-2xl font-semibold mb-2 text-custom-navy font-playfair">And Many More...</h3>
+                    <p class="text-gray-600 leading-relaxed">Including Weekend Warrior Formats, Side Bets, and Advanced Tactics!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="scorecards" class="py-16 bg-custom-navy text-white">
+        <div class="container mx-auto px-6 md:px-12 text-center">
+            <h2 class="text-3xl font-playfair mb-4 text-custom-gold">The Paperwork: Your Ultimate Scorekeeping Toolkit</h2>
+            <p class="text-xl mb-10 max-w-3xl mx-auto leading-relaxed">
+                "Herein lies the practical heart of 'Peel and Eat'—your collection of <strong class="text-custom-gold">professionally designed, ready-to-use, tear-out scorecards.</strong> Forget makeshift tracking. These templates are specifically crafted for the games detailed, ensuring clarity, accuracy, and efficient settlement."
+            </p>
+            <div class="grid md:grid-cols-3 gap-8">
+                 <div class="bg-white text-gray-800 p-6 rounded-lg shadow-xl transform hover:scale-105 transition duration-300">
+                    <img src="images/clarity.png" alt="Clarity Icon" class="mx-auto mb-4 h-16 w-auto object-contain" onerror="this.src='https://placehold.co/100x64/eeeeee/0A2F51?text=Clarity'; this.onerror=null;">
+                    <h3 class="text-xl font-semibold mb-2 text-custom-navy">Clarity & Precision</h3>
+                    <p>Intuitive layouts for accurate tracking of bets, presses, and points. No more confusion.</p>
+                </div>
+                <div class="bg-white text-gray-800 p-6 rounded-lg shadow-xl transform hover:scale-105 transition duration-300">
+                     <img src="images/durable.png" alt="Durability Icon" class="mx-auto mb-4 h-16 w-auto object-contain" onerror="this.src='https://placehold.co/100x64/eeeeee/0A2F51?text=Durable'; this.onerror=null;">
+                    <h3 class="text-xl font-semibold mb-2 text-custom-navy">Durable & Convenient</h3>
+                    <p>Printed on quality card stock, perforated for easy removal. Perfect for on-course handling.</p>
+                </div>
+                <div class="bg-white text-gray-800 p-6 rounded-lg shadow-xl transform hover:scale-105 transition duration-300">
+                    <img src="images/settle.png" alt="Efficiency Icon" class="mx-auto mb-4 h-16 w-auto object-contain" onerror="this.src='https://placehold.co/100x64/eeeeee/0A2F51?text=Settle'; this.onerror=null;">
+                    <h3 class="text-xl font-semibold mb-2 text-custom-navy">Effortless Settlement</h3>
+                    <p>Streamline post-round calculations. Ensure everyone leaves the 19th hole with wallets and friendships intact.</p>
+                </div>
+            </div>
+             <a href="#free-scorecard" class="mt-12 inline-block btn-primary text-lg font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl">
+                Get Updates & Scorecard
+            </a>
+        </div>
+    </section>
+
+    <section id="free-scorecard" class="py-16 section-bg-light">
+        <div class="container mx-auto px-6 md:px-12 text-center">
+            <div class="ml-embedded-form-wrapper">
+                <div class="ml-embedded" data-form="k1R97Z"></div> </div>
+            <p class="text-xs text-gray-500 mt-4">We respect your privacy. Unsubscribe at any time.</p>
+        </div>
+    </section>
+
+    <section id="author" class="py-16 bg-white">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex flex-col md:flex-row-reverse items-center gap-12">
+                <div class="md:w-1/3 text-center">
+                     <img src="images/author-evan-ratner.jpg" alt="Evan Ratner, Author of Peel and Eat" class="mx-auto rounded-full shadow-xl w-56 h-56 md:w-64 md:h-64 object-cover transform hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/256x256/eeeeee/333333?text=Author'; this.onerror=null;">
+                </div>
+                <div class="md:w-2/3">
+                    <h2 class="text-3xl font-playfair mb-6 text-gray-800">Meet the Author: Evan Ratner</h2>
+                    <p class="text-lg text-gray-700 mb-4 leading-relaxed">
+                        Born with a pitching wedge in one hand and his grandfather's lucky coin in the. Other, Evan Ratner spent years learning golf betting the hard way. Through three-putts and tricky lies, Nassau beatdowns and skin game triumphs, this guide represents a lifetime of experience observing the settlement of wagers on the 18th green.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-4 leading-relaxed">
+                        The author maintains a <strong class="text-custom-navy">suspicious 14 handicap</strong> at clubs across North America and considers himself a student of the game's true currency: <strong class="text-custom-navy">properly structured wagers and meticulously kept scores.</strong>
+                    </p>
+                    <blockquote class="border-l-4 border-custom-gold pl-4 py-2 my-6 italic text-lg text-gray-600 leading-relaxed">
+                        "I never met a golfer who played better when relaxed. A little financial tension focuses the mind wonderfully."
+                    </blockquote>
+                     <p class="text-sm text-gray-600">A Publication of Fairway Financial Entertainment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="buy" class="py-20 hero-bg text-white">
+        <div class="container mx-auto px-6 md:px-12 text-center">
+            <h2 class="text-3xl md:text-4xl font-playfair mb-6">Ready to Elevate Your Game & Your Wagers?</h2>
+            <p class="text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
+                Stop leaving money on the table (or the 18th green). "Peel and Eat" is your comprehensive guide to mastering the art of golf gambling, complete with the essential tools you need to do it with clarity and style.
+            </p>
+            <p class="text-lg font-semibold mb-4">Book Launching Soon!</p>
+            <p class="text-md mb-6">Sign up below for launch updates and get your free WOLF scorecard now!</p>
+             <a href="#free-scorecard" class="btn-primary text-lg font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl">
+                Sign Up & Get Scorecard
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-custom-navy text-white py-10">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex justify-center mb-4">
+                 <img src="images/logo.png" alt="Peel and Eat Logo" class="h-16" onerror="this.style.display='none'; this.onerror=null;">
+            </div>
+            <p class="mb-2 font-playfair text-custom-gold text-xl">Peel and Eat</p>
+            <p class="text-sm mb-2">&copy; <span id="currentYear"></span> Evan Ratner & Fairway Financial Entertainment. All Rights Reserved.</p>
+            <p class="text-sm">
+                <a href="privacy.html" class="hover:text-custom-gold transition duration-300">Privacy Policy</a> |
+                <a href="terms_of_service.html" class="hover:text-custom-gold transition duration-300">Terms of Service</a>
+            </p>
+            <p class="text-xs mt-4 max-w-md mx-auto">This book contains strategies for legal golf wagering among consenting adults. Use at your own risk. Preferably on the 17th hole when your opponent is three down and desperate.</p>
+        </div>
+    </footer>
+
+    <div id="nassau-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" data-close-modal>&times;</button>
+            <h3 class="text-2xl modal-title mb-4">Nassau</h3>
+            <div class="modal-body">
+                <p>The classic Nassau is a three-part bet: one wager on the front nine, one on the back nine, and one on the overall 18-hole match. It's a cornerstone of golf gambling, beloved for its simplicity and the constant action it provides.</p>
+                <p>Strategic pressing (doubling the bet) can add layers of excitement and complexity. Understanding when and how to press is key to mastering the Nassau.</p>
+                <p class="modal-cta">For full rules, etiquette, pressing strategies, and the official Nassau scorecard, sign up for launch updates!</p>
+            </div>
+        </div>
+    </div>
+    <div id="skins-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" data-close-modal>&times;</button>
+            <h3 class="text-2xl modal-title mb-4">Skins</h3>
+            <div class="modal-body">
+                <p>A Skins game is a high-stakes, hole-by-hole battle. Each hole is worth a certain "skin" (value). To win a skin, a player must win the hole outright. If two or more players tie for the low score, the skin carries over to the next hole, increasing the pot and the pressure.</p>
+                <p>This format can lead to dramatic swings and exciting finishes, especially when multiple skins carry over.</p>
+                <p class="modal-cta">Learn about variations, carryover rules, and scorecard setup by signing up for launch updates!</p>
+            </div>
+        </div>
+    </div>
+    <div id="wolf-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" data-close-modal>&times;</button>
+            <h3 class="text-2xl modal-title mb-4">Wolf</h3>
+            <div class="modal-body">
+                <p>Wolf is a dynamic team game where the "Wolf" (a role that rotates among players) chooses a partner for each hole, or bravely decides to go "Lone Wolf" against the other three players for higher stakes.</p>
+                <p>Strategic partner selection and knowing when to take on the pack alone are crucial. It's a game of shifting alliances and constant calculation.</p>
+                <p class="modal-cta">Sign up for launch updates to get details on Wolf variations, point systems, and tracking.</p>
+            </div>
+        </div>
+    </div>
+     <div id="vegas-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" data-close-modal>&times;</button>
+            <h3 class="text-2xl modal-title mb-4">Vegas</h3>
+            <div class="modal-body">
+                <p>Vegas (also known as "Las Vegas") is a team game typically played with foursomes, where partners' scores are combined to form a two-digit number (e.g., a 4 and a 5 become 45). The lower combined score wins the points for that hole.</p>
+                <p>Birdies and eagles can flip scores or multiply points, leading to big swings and high drama. It's a favorite for its potential for large payouts (or losses!).</p>
+                <p class="modal-cta">Discover scoring variations and essential tracking tips for Vegas by signing up for launch updates!</p>
+            </div>
+        </div>
+    </div>
+    <div id="bingo-bango-bongo-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" data-close-modal>&times;</button>
+            <h3 class="text-2xl modal-title mb-4">Bingo Bango Bongo</h3>
+            <div class="modal-body">
+                <p>A points-based game that rewards three achievements on each hole:
+                    <strong>Bingo:</strong> First player onto the green.
+                    <strong>Bango:</strong> Player whose ball is closest to the pin once all balls are on the green.
+                    <strong>Bongo:</strong> First player to hole out.
+                </p>
+                <p>It's great for groups of varying skill levels as it provides multiple chances to win points on every hole, regardless of overall score.</p>
+                <p class="modal-cta">Sign up for launch updates to learn the nuances and how to keep score effectively.</p>
+            </div>
+        </div>
+    </div>
+     <div id="bloodsome-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" data-close-modal>&times;</button>
+            <h3 class="text-2xl modal-title mb-4">Bloodsome</h3>
+            <div class="modal-body">
+                <p>A devious and strategic alternate shot format. After both players on a team hit their tee shots, their opponents choose which ball the team must play for their second shot (usually the worse of the two).</p>
+                <p>This game tests partnerships and shot-making under pressure, as you're often recovering from a less-than-ideal position chosen by your adversaries.</p>
+                <p class="modal-cta">Learn the full rules and tactical considerations for Bloodsome by signing up for launch updates!</p>
+            </div>
+        </div>
+    </div>
+    <div id="stableford-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" data-close-modal>&times;</button>
+            <h3 class="text-2xl modal-title mb-4">Stableford</h3>
+            <div class="modal-body">
+                <p>The Stableford system awards points based on your score relative to par on each hole (e.g., 1 point for bogey, 2 for par, 3 for birdie). The goal is to accumulate the highest point total.</p>
+                <p>It's popular because one or two bad holes won't ruin your entire round, as you can't score less than zero points on a hole. This encourages aggressive play.</p>
+                <p class="modal-cta">Sign up for launch updates to cover different Stableford scoring variations and strategies.</p>
+            </div>
+        </div>
+    </div>
+    <div id="banker-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" data-close-modal>&times;</button>
+            <h3 class="text-2xl modal-title mb-4">Banker/Quota</h3>
+            <div class="modal-body">
+                <p>In Quota (often called Banker or Points), each player has a point target (quota) to reach, usually based on their handicap (e.g., 36 minus handicap). Players earn points similar to Stableford (1 for bogey, 2 for par, etc.).</p>
+                <p>The player who exceeds their quota by the most points wins. It's an excellent game for players of different abilities, as everyone is competing against their own target.</p>
+                <p class="modal-cta">Get the full breakdown of Quota calculations and variations by signing up for launch updates!</p>
+            </div>
+        </div>
+    </div>
+    <div id="more-games-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" data-close-modal>&times;</button>
+            <h3 class="text-2xl modal-title mb-4">And Many More...</h3>
+            <div class="modal-body">
+                <p>"Peel and Eat: A Gentleman's Guide to Golf Gambling" is packed with even more ways to enhance your rounds!</p>
+                <p>Discover engaging "Weekend Warrior Formats" perfect for your regular group, a plethora of "Side Bets & Props" (Greenies, Sandies, Barkies, and more), and crucial "Advanced Tactics" for pressing, defensive play, and reading your opponents.</p>
+                <p class="modal-cta">The complete guide to sophisticated on-course wagering awaits! Sign up for launch updates!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+        (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+        ml('account', '1515951'); // Ensure this is your correct MailerLite Account ID
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+                    mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Smooth Scrolling for Anchor Links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    // Ensure it's a valid internal link and not just '#'
+                    if (href && href.length > 1 && href.startsWith('#')) {
+                        const targetId = href;
+                        const targetElement = document.querySelector(targetId);
+
+                        if (targetElement) {
+                            e.preventDefault(); // Prevent default jump only if target exists
+                            const nav = document.querySelector('nav');
+                            const navHeight = nav ? nav.offsetHeight : 0; // Get nav height or 0 if no nav
+                            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+
+                            // Close mobile menu if open after clicking a link
+                            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                                mobileMenu.classList.add('hidden');
+                                if (mobileMenuButton) {
+                                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+            // Update Footer Year
+            const yearSpan = document.getElementById('currentYear');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
+
+            // Modal Functionality
+            const gameCards = document.querySelectorAll('.game-card[data-modal-target]');
+            const closeButtons = document.querySelectorAll('[data-close-modal]');
+            const modalOverlays = document.querySelectorAll('.modal-overlay');
+
+            gameCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const modalId = card.getAttribute('data-modal-target');
+                    const modal = document.getElementById(modalId);
+                    if (modal) {
+                        modal.classList.add('active');
+                        // Optional: Trap focus within the modal for accessibility
+                    }
+                });
+            });
+
+            closeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = button.closest('.modal-overlay');
+                    if (modal) {
+                        modal.classList.remove('active');
+                    }
+                });
+            });
+
+            modalOverlays.forEach(overlay => {
+                // Close modal if clicking on the overlay itself (background)
+                overlay.addEventListener('click', (event) => {
+                    if (event.target === overlay) {
+                        overlay.classList.remove('active');
+                    }
+                });
+                // Optional: Close modal on 'Escape' key press
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && overlay.classList.contains('active')) {
+                        overlay.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+
