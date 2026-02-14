@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import GoldButton from '../components/GoldButton';
 import ProgressBar from '../components/ProgressBar';
 import { QUIZ_BANK } from '../data/quizzes';
+import { CURRENT_PARSHA } from '../data/parsha';
 
 const ANSWER_LETTERS = ['A', 'B', 'C', 'D'];
 const BASE_XP_PER_CORRECT = 8;
 const MAX_HEARTS = 3;
 
 function getQuestions() {
-  const parshaKey = 'Mishpatim';
+  const parshaKey = CURRENT_PARSHA ? CURRENT_PARSHA.name : Object.keys(QUIZ_BANK)[0];
   const bank = QUIZ_BANK[parshaKey] || QUIZ_BANK[Object.keys(QUIZ_BANK)[0]] || [];
   return bank.slice(0, 5);
 }
@@ -24,11 +25,20 @@ export default function QuizScreen({ userHook, awardXP, onBack }) {
   const [hearts, setHearts] = useState(userHook.user.hearts);
   const [quizComplete, setQuizComplete] = useState(false);
   const [answers, setAnswers] = useState([]);
+  const [hasFinished, setHasFinished] = useState(false);
+  const explanationTimerRef = useRef(null);
 
   // Sync hearts with userHook when they change externally
   useEffect(() => {
     setHearts(userHook.user.hearts);
   }, [userHook.user.hearts]);
+
+  // Cleanup explanation timer on unmount
+  useEffect(() => {
+    return () => {
+      if (explanationTimerRef.current) clearTimeout(explanationTimerRef.current);
+    };
+  }, []);
 
   // Guard: no questions available
   if (!questions.length) {
@@ -67,7 +77,7 @@ export default function QuizScreen({ userHook, awardXP, onBack }) {
     }
 
     // Reveal explanation after a short delay
-    setTimeout(() => {
+    explanationTimerRef.current = setTimeout(() => {
       setShowExplanation(true);
     }, 500);
   };
@@ -83,6 +93,8 @@ export default function QuizScreen({ userHook, awardXP, onBack }) {
   };
 
   const handleFinish = () => {
+    if (hasFinished) return;
+    setHasFinished(true);
     const xpEarned = score * BASE_XP_PER_CORRECT;
     awardXP(xpEarned);
     userHook.completeMission('quiz', { score, xp: xpEarned });

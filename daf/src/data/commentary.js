@@ -74,6 +74,114 @@ export const COMMENTARY_BANK = {
     ]
   },
 
+  'Lech Lecha': {
+    title: 'Go Forth',
+    verse: 'לֶךְ־לְךָ מֵאַרְצְךָ וּמִמּוֹלַדְתְּךָ וּמִבֵּית אָבִיךָ',
+    ref: 'Genesis 12:1',
+    messages: [
+      {
+        speaker: 'narrator',
+        text: 'God\'s first words to Abraham: "Go forth from your land, your birthplace, and your father\'s house." Why does God specify three things the patriarch must leave?'
+      },
+      {
+        speaker: 'rashi',
+        text: '"Lech lecha" — go for yourself, for your own benefit. God does not simply say "go" (lech) but "go to yourself" (lech lecha). This journey will bring you merit: there you will become a great nation, whereas here you will not merit children. Furthermore, I will make your character known in the world. (Commentary on Genesis 12:1)'
+      },
+      {
+        speaker: 'narrator',
+        text: 'Rashi reveals that this command is not punishment but privilege — Abraham is being invited into his own destiny. But what about the three levels of departure?'
+      },
+      {
+        speaker: 'ramban',
+        text: 'The three levels — your land, your birthplace, your father\'s house — go from general to specific, from easier to harder. Leaving your country is one thing; leaving your culture and childhood home is deeper; leaving your father\'s house means severing the most intimate bonds. God asks Abraham to undergo a complete transformation of identity. (Commentary on Genesis 12:1)'
+      },
+      {
+        speaker: 'narrator',
+        text: 'Ramban shows us the psychology of transformation: true change requires letting go at every level. But Ibn Ezra finds something even more profound here.'
+      },
+      {
+        speaker: 'ibn_ezra',
+        text: 'The phrase "to a land that I will show you" is remarkable — God does not tell Abraham WHERE to go. He must travel in faith, not knowing the destination. The test is not the journey itself, but the willingness to walk forward without certainty. This is the essence of emunah — trust beyond sight. (Commentary on Genesis 12:1)'
+      },
+      {
+        speaker: 'narrator',
+        text: 'Three brilliant readings of one verse: Rashi sees divine promise (go for your benefit), Ramban sees progressive sacrifice (release everything), and Ibn Ezra sees radical trust (walk without knowing where). Abraham\'s journey is the template for every spiritual journey: promise, sacrifice, and faith.'
+      }
+    ]
+  },
+
+  Vayeira: {
+    title: 'And He Appeared',
+    verse: 'וַיֵּרָא אֵלָיו יְהוָה בְּאֵלֹנֵי מַמְרֵא',
+    ref: 'Genesis 18:1',
+    messages: [
+      {
+        speaker: 'narrator',
+        text: '"And God appeared to Abraham by the oaks of Mamre, as he sat at the entrance of his tent in the heat of the day." But what was Abraham doing at this moment?'
+      },
+      {
+        speaker: 'rashi',
+        text: 'It was the third day after Abraham\'s circumcision — the most painful day of recovery. God came to visit the sick. And what was Abraham doing? Sitting at the tent door looking for travelers to welcome, despite his pain. This teaches that hospitality to guests is greater even than receiving the Divine Presence — for when Abraham saw the three travelers, he ran to them, asking God to wait! (Commentary on Genesis 18:1-2)'
+      },
+      {
+        speaker: 'narrator',
+        text: 'Extraordinary — Abraham interrupts a visit from God to attend to strangers! This establishes that caring for people is the highest form of serving God.'
+      },
+      {
+        speaker: 'ramban',
+        text: 'The opening phrase "Vayeira" (and He appeared) is a direct revelation, not through angel or dream. This is the highest level of prophecy, reserved for those who have prepared themselves through righteousness. The circumcision itself — the willingness to change his body for God — elevated Abraham to a new level of spiritual perception. Pain became a gateway to divine encounter. (Commentary on Genesis 18:1)'
+      },
+      {
+        speaker: 'narrator',
+        text: 'Ramban connects Abraham\'s physical sacrifice with his spiritual elevation — suffering willingly accepted opens new dimensions of awareness.'
+      },
+      {
+        speaker: 'ibn_ezra',
+        text: '"In the heat of the day" is not incidental detail. It was the hottest part of the day — God made the day exceptionally hot so no travelers would burden the recovering Abraham. Yet Abraham was DISTRESSED by the lack of guests. When God saw this, He sent three angels in human form. The righteous prefer the burden of serving others to the comfort of rest. (Commentary on Genesis 18:1)'
+      },
+      {
+        speaker: 'narrator',
+        text: 'What a portrait of Abraham: recovering from surgery, in scorching heat, distressed not by pain but by the absence of anyone to serve. Rashi teaches that hospitality surpasses prophecy, Ramban that sacrifice opens revelation, and Ibn Ezra that the righteous find rest in service, not in leisure.'
+      }
+    ]
+  },
+
+  Yitro: {
+    title: 'The Ten Commandments',
+    verse: 'אָנֹכִי יְהוָה אֱלֹהֶיךָ אֲשֶׁר הוֹצֵאתִיךָ מֵאֶרֶץ מִצְרַיִם',
+    ref: 'Exodus 20:2',
+    messages: [
+      {
+        speaker: 'narrator',
+        text: '"I am the Lord your God who brought you out of the land of Egypt." The first of the Ten Commandments. But is this a commandment at all? And why identify as the God of the Exodus rather than the Creator of the universe?'
+      },
+      {
+        speaker: 'rashi',
+        text: 'Why does God say "who brought you out of Egypt" rather than "who created heaven and earth"? Because at the sea, God appeared as a warrior, and at Sinai, as an elder of wisdom. God says "I am the same God — do not say there are two powers." Also, the Exodus established a debt: I brought you out, you accepted My sovereignty. This is a covenant relationship, not an abstract theology. (Commentary on Exodus 20:2)'
+      },
+      {
+        speaker: 'narrator',
+        text: 'Rashi grounds the relationship in lived experience rather than philosophy — God is not proving existence through cosmological argument, but through historical relationship. Ramban takes this further.'
+      },
+      {
+        speaker: 'ramban',
+        text: 'This IS a commandment — the first and greatest: to believe in God\'s existence and ongoing involvement in the world. The word "Anochi" (I am) rather than "Ani" is emphatic, suggesting God\'s very essence. And "who brought you out of Egypt" teaches that God is not a watchmaker who wound up the universe and walked away. God intervenes, redeems, and cares. This is the foundation of all Torah. (Commentary on Exodus 20:2)'
+      },
+      {
+        speaker: 'narrator',
+        text: 'For Ramban, this single verse refutes deism — God is not distant but intimately involved. The Exodus proves ongoing providence. Now Ibn Ezra reveals the grammatical mystery.'
+      },
+      {
+        speaker: 'ibn_ezra',
+        text: '"Your God" — in the singular. God spoke to the entire nation, but addressed each individual personally. Every person at Sinai heard the commandments as if spoken to them alone. The Midrash says each person heard according to their capacity — the elderly heard gently, the young heard powerfully, children heard playfully. The same Torah speaks differently to every soul. (Commentary on Exodus 20:2)'
+      },
+      {
+        speaker: 'narrator',
+        text: 'Three extraordinary insights: Rashi teaches that faith is rooted in relationship, not abstraction. Ramban establishes that believing in God means believing God cares and acts. Ibn Ezra reveals that revelation is personal — the universal Torah addresses each soul individually. Together, they show that Sinai was not a lecture but an encounter.'
+      }
+    ]
+  },
+
   Noach: {
     title: 'Righteous in His Generation',
     verse: 'נֹחַ אִישׁ צַדִּיק תָּמִים הָיָה בְּדֹרֹתָיו',

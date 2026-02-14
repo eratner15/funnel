@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import GoldButton from '../components/GoldButton';
 import { COMMENTARY_BANK } from '../data/commentary';
+import { CURRENT_PARSHA } from '../data/parsha';
 
 const SPEAKERS = {
   narrator: { name: 'Narrator', avatar: null, color: 'var(--text-muted)', italic: true },
@@ -10,13 +11,15 @@ const SPEAKERS = {
 };
 
 export default function CommentaryScreen({ userHook, awardXP, onBack }) {
-  const commentary = COMMENTARY_BANK['Mishpatim'] || Object.values(COMMENTARY_BANK)[0];
+  const parshaName = CURRENT_PARSHA ? CURRENT_PARSHA.name : null;
+  const commentary = (parshaName && COMMENTARY_BANK[parshaName]) || Object.values(COMMENTARY_BANK)[0];
   const messages = commentary.messages;
   const total = messages.length;
 
   const [visibleMessages, setVisibleMessages] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [hasAwarded, setHasAwarded] = useState(false);
 
   const chatRef = useRef(null);
 
@@ -49,6 +52,8 @@ export default function CommentaryScreen({ userHook, awardXP, onBack }) {
   }, [visibleMessages, isTyping]);
 
   const handleComplete = () => {
+    if (hasAwarded) return;
+    setHasAwarded(true);
     awardXP(40);
     userHook.completeMission('commentary', { xp: 40 });
     userHook.addAchievement('first_commentary');

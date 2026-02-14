@@ -18,6 +18,7 @@ export default function ChavrutaScreen({ userHook, awardXP, onBack }) {
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [hasCompleted, setHasCompleted] = useState(false);
 
   const chatRef = useRef(null);
 
@@ -73,6 +74,8 @@ export default function ChavrutaScreen({ userHook, awardXP, onBack }) {
   };
 
   const handleComplete = () => {
+    if (hasCompleted) return;
+    setHasCompleted(true);
     awardXP(30);
     userHook.completeMission('chavruta', { xp: 30 });
     onBack();

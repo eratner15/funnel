@@ -609,6 +609,15 @@ select:focus-visible {
   letter-spacing: 0.02em;
 }
 
+.hebrew-small {
+  font-family: var(--font-hebrew);
+  direction: rtl;
+  text-align: right;
+  unicode-bidi: bidi-override;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-relaxed);
+}
+
 /* ── Animations ── */
 
 .fade-in-up {
@@ -1012,6 +1021,10 @@ select:focus-visible {
    12. PROGRESS BAR
    ============================================================ */
 
+.progress-bar-wrap {
+  width: 100%;
+}
+
 .progress-bar {
   width: 100%;
   height: 8px;
@@ -1122,9 +1135,15 @@ select:focus-visible {
   color: var(--gold);
 }
 
-.streak-badge::before {
-  content: '\01F525';
+.streak-fire {
   font-size: var(--fs-base);
+  line-height: 1;
+}
+
+.streak-count {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--gold);
 }
 
 
@@ -1153,11 +1172,11 @@ select:focus-visible {
   white-space: nowrap;
 }
 
-.xp-toast .xp-icon {
+.xp-toast .xp-toast-icon {
   font-size: var(--fs-md);
 }
 
-.xp-toast .xp-amount {
+.xp-toast .xp-toast-text {
   font-size: var(--fs-base);
   font-weight: var(--fw-bold);
 }
@@ -1194,7 +1213,7 @@ select:focus-visible {
   flex-shrink: 0;
 }
 
-.mission-card .mission-content {
+.mission-card .mission-info {
   flex: 1;
   min-width: 0;
 }
@@ -1206,14 +1225,35 @@ select:focus-visible {
   margin-bottom: 2px;
 }
 
+.mission-card .mission-desc {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.mission-card .mission-meta {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
 .mission-card .mission-xp {
   font-size: var(--fs-xs);
   font-weight: var(--fw-medium);
   color: var(--gold);
 }
 
-.mission-card .mission-status {
-  flex-shrink: 0;
+.mission-card .mission-time {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.mission-card .mission-check {
+  color: var(--green);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
 }
 
 .mission-card.completed {
@@ -1230,8 +1270,7 @@ select:focus-visible {
   color: var(--text-muted);
 }
 
-.mission-card.completed .mission-status::after {
-  content: '\2713';
+.mission-card.completed .mission-check {
   color: var(--green);
   font-size: var(--fs-lg);
   font-weight: var(--fw-bold);
@@ -1979,11 +2018,11 @@ textarea.input-field {
   flex-shrink: 0;
 }
 
-.shabbat-widget .shabbat-content {
+.shabbat-widget .shabbat-info {
   flex: 1;
 }
 
-.shabbat-widget .shabbat-title {
+.shabbat-widget .shabbat-label {
   font-size: var(--fs-sm);
   font-weight: var(--fw-semibold);
   color: var(--blue);
@@ -3130,6 +3169,10 @@ textarea.input-field {
 
 .search-input::placeholder {
   color: var(--text-muted);
+}
+
+.paths-section {
+  margin: 16px 0;
 }
 
 .paths-grid {
