@@ -26,18 +26,20 @@ export default function CommentaryScreen({ userHook, awardXP, onBack }) {
       return;
     }
 
+    let revealTimer;
     const timer = setTimeout(() => {
       setIsTyping(true);
 
-      const revealTimer = setTimeout(() => {
+      revealTimer = setTimeout(() => {
         setIsTyping(false);
         setVisibleMessages((prev) => prev + 1);
       }, 1000);
-
-      return () => clearTimeout(revealTimer);
     }, 2500);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(revealTimer);
+    };
   }, [visibleMessages, total]);
 
   useEffect(() => {

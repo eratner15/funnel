@@ -3,8 +3,16 @@
 
 export const CHAVRUTA_RESPONSES = [
   {
-    keywords: ['default'],
+    keywords: [],
     response: 'Great question! In Parshat Mishpatim, we find 53 mitzvot covering everything from civil law to ethical treatment of others. The Talmud teaches that these laws were given right after the Ten Commandments to show that civil law is just as divine as ritual law. What aspect interests you most — the laws between people, or the laws between humanity and God?'
+  },
+  {
+    keywords: ['mishpatim', 'parsha', 'what is', 'about', 'civil', 'law', 'justice'],
+    response: 'Mishpatim means "laws" or "ordinances" — and it\'s one of the most dense legal portions in the Torah, containing 53 of the 613 commandments. It covers everything from the treatment of servants to personal injury law, property damage, lending practices, and the treatment of strangers. Rashi asks: why are these civil laws placed right after the account of Sinai and the altar? To teach that the Sanhedrin (court) should sit near the Temple — justice and holiness are inseparable in Judaism. Ramban adds that these laws prove the Torah isn\'t just a spiritual guide but a complete legal system for building a just society.'
+  },
+  {
+    keywords: ['eye', 'tooth', 'injury', 'compensation', 'damages', 'punishment'],
+    response: '"An eye for an eye, a tooth for a tooth" (Exodus 21:24) is perhaps the most misunderstood verse in all of Torah. The Talmud (Bava Kamma 83b-84a) demonstrates conclusively that this always meant monetary compensation, not physical retaliation. The proof? If a blind person injures someone\'s eye, you can\'t take their eye — literal punishment is inherently unequal. Only financial compensation achieves true proportional justice in every case. Rashi says the verse uses strong language to teach the MORAL severity — the offender deserves to lose their eye — but the court assigns monetary payment. Justice tempered by mercy. This is the foundation of Jewish tort law.'
   },
   {
     keywords: ['slavery', 'slave', 'servant', 'eved', 'hebrew servant', 'bondsman'],

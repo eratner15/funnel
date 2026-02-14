@@ -111,10 +111,13 @@ export function useUser() {
       const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
 
       let newStreak = prev.streak;
+      // Only bump streak on first mission of the day
       if (prev.lastStudyDate !== today) {
-        newStreak = (prev.lastStudyDate === yesterday || prev.lastStudyDate === today)
-          ? prev.streak + 1
-          : 1;
+        if (prev.lastStudyDate === yesterday) {
+          newStreak = prev.streak + 1;  // Consecutive day
+        } else {
+          newStreak = 1;  // First session or missed days
+        }
       }
 
       return {

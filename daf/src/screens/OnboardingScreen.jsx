@@ -69,6 +69,7 @@ export default function OnboardingScreen({ userHook }) {
               placeholder="Enter your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter' && name.trim()) handleGetStarted(); }}
               autoFocus
             />
           </div>
