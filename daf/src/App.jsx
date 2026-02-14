@@ -1,7 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useUser } from './hooks/useUser';
 import TabBar from './components/TabBar';
 import XPToast from './components/XPToast';
+import LevelUpModal from './components/LevelUpModal';
+import DailyRewardModal from './components/DailyRewardModal';
+import UrgencyBanner from './components/UrgencyBanner';
 import HomeScreen from './screens/HomeScreen';
 import QuizScreen from './screens/QuizScreen';
 import CommentaryScreen from './screens/CommentaryScreen';
@@ -11,16 +14,75 @@ import TreeScreen from './screens/TreeScreen';
 import ExploreScreen from './screens/ExploreScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import OnboardingScreen from './screens/OnboardingScreen';
+import PremiumScreen from './screens/PremiumScreen';
+import LeaderboardScreen from './screens/LeaderboardScreen';
 
 const TAB_SCREENS = ['home', 'tree', 'explore', 'profile'];
-const MODAL_SCREENS = ['quiz', 'commentary', 'chavruta', 'verse', 'challenge'];
+const MODAL_SCREENS = ['quiz', 'commentary', 'chavruta', 'verse', 'challenge', 'premium', 'leaderboard'];
 
 export default function App() {
   const userHook = useUser();
-  const { user, addXP } = userHook;
+  const { user, addXP, canClaimDailyReward, getDailyRewardInfo, claimDailyReward } = userHook;
   const [activeTab, setActiveTab] = useState('home');
   const [activeScreen, setActiveScreen] = useState(null);
   const [xpToasts, setXpToasts] = useState([]);
+  const [levelUpModal, setLevelUpModal] = useState(null);
+  const [showDailyReward, setShowDailyReward] = useState(false);
+  const [urgencyBanners, setUrgencyBanners] = useState([]);
+
+  // Show daily reward on first visit of the day
+  useEffect(() => {
+    if (user.onboarded && canClaimDailyReward()) {
+      const timer = setTimeout(() => setShowDailyReward(true), 800);
+      return () => clearTimeout(timer);
+    }
+  }, [user.onboarded, canClaimDailyReward]);
+
+  // Check for urgency conditions
+  useEffect(() => {
+    if (!user.onboarded) return;
+    const banners = [];
+    const today = new Date().toISOString().split('T')[0];
+    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+
+    // Streak at risk (studied yesterday but not today yet)
+    if (user.streak > 0 && user.lastStudyDate === yesterday) {
+      banners.push({
+        id: 'streak-risk',
+        type: 'streak-risk',
+        message: `${user.streak}-day streak at risk! Study now to keep it alive.`,
+        action: 'Start Quiz',
+        screen: 'quiz'
+      });
+    }
+
+    // Hearts low
+    if (user.hearts <= 1 && !user.isPremium) {
+      banners.push({
+        id: 'hearts-low',
+        type: 'hearts-low',
+        message: `Only ${user.hearts} heart${user.hearts === 1 ? '' : 's'} left! Go Premium for unlimited.`,
+        action: 'Go Premium',
+        screen: 'premium'
+      });
+    }
+
+    // Premium promo (show occasionally for free users with some engagement)
+    if (!user.isPremium && user.xp >= 50 && user.quizzesTaken >= 1 && !banners.length) {
+      const showPromo = Math.random() < 0.3; // 30% chance
+      if (showPromo) {
+        banners.push({
+          id: 'premium-promo',
+          type: 'premium-promo',
+          message: 'Unlock unlimited hearts, 2x XP & all 54 parshiyot!',
+          action: 'Learn More',
+          screen: 'premium'
+        });
+      }
+    }
+
+    setUrgencyBanners(banners);
+  }, [user.onboarded, user.streak, user.lastStudyDate, user.hearts, user.isPremium, user.xp, user.quizzesTaken]);
 
   const showXPToast = useCallback((amount) => {
     const id = Date.now();
@@ -32,8 +94,13 @@ export default function App() {
   }, []);
 
   const awardXP = useCallback((amount) => {
-    addXP(amount);
+    const result = addXP(amount);
     showXPToast(amount);
+    // Check for level up
+    if (result && result.leveledUp) {
+      setTimeout(() => setLevelUpModal(result.newLevel), 600);
+    }
+    return result;
   }, [addXP, showXPToast]);
 
   const navigate = useCallback((screen) => {
@@ -49,6 +116,18 @@ export default function App() {
     setActiveScreen(null);
   }, []);
 
+  const handleDailyRewardClaim = useCallback(() => {
+    const reward = claimDailyReward();
+    setShowDailyReward(false);
+    if (reward && reward.total > 0) {
+      showXPToast(reward.total);
+    }
+  }, [claimDailyReward, showXPToast]);
+
+  const dismissBanner = useCallback((id) => {
+    setUrgencyBanners(prev => prev.filter(b => b.id !== id));
+  }, []);
+
   // Show onboarding if user hasn't been onboarded
   if (!user.onboarded) {
     return (
@@ -61,7 +140,6 @@ export default function App() {
   const isModal = activeScreen && MODAL_SCREENS.includes(activeScreen);
 
   const renderScreen = () => {
-    // Modal screens (no tab bar)
     if (activeScreen === 'quiz') {
       return <QuizScreen userHook={userHook} awardXP={awardXP} onBack={goBack} />;
     }
@@ -75,11 +153,15 @@ export default function App() {
       return <VerseScreen userHook={userHook} awardXP={awardXP} onBack={goBack} />;
     }
     if (activeScreen === 'challenge') {
-      // Challenge maps to quiz for MVP
       return <QuizScreen userHook={userHook} awardXP={awardXP} onBack={goBack} />;
     }
+    if (activeScreen === 'premium') {
+      return <PremiumScreen userHook={userHook} onBack={goBack} />;
+    }
+    if (activeScreen === 'leaderboard') {
+      return <LeaderboardScreen userHook={userHook} onBack={goBack} />;
+    }
 
-    // Tab screens
     switch (activeTab) {
       case 'home':
         return <HomeScreen userHook={userHook} navigate={navigate} />;
@@ -88,11 +170,13 @@ export default function App() {
       case 'explore':
         return <ExploreScreen navigate={navigate} />;
       case 'profile':
-        return <ProfileScreen userHook={userHook} />;
+        return <ProfileScreen userHook={userHook} navigate={navigate} />;
       default:
         return <HomeScreen userHook={userHook} navigate={navigate} />;
     }
   };
+
+  const rewardInfo = getDailyRewardInfo();
 
   return (
     <div className="app-container">
@@ -104,6 +188,39 @@ export default function App() {
           onDone={() => removeToast(toast.id)}
         />
       ))}
+
+      {/* Urgency Banners */}
+      {urgencyBanners.map(banner => (
+        <UrgencyBanner
+          key={banner.id}
+          type={banner.type}
+          message={banner.message}
+          action={banner.action}
+          onAction={() => {
+            dismissBanner(banner.id);
+            navigate(banner.screen);
+          }}
+          onDismiss={() => dismissBanner(banner.id)}
+        />
+      ))}
+
+      {/* Level Up Modal */}
+      {levelUpModal && (
+        <LevelUpModal
+          level={levelUpModal}
+          onClose={() => setLevelUpModal(null)}
+        />
+      )}
+
+      {/* Daily Reward Modal */}
+      {showDailyReward && (
+        <DailyRewardModal
+          day={rewardInfo.day}
+          xpReward={rewardInfo.xp}
+          streakBonus={rewardInfo.streakBonus}
+          onClaim={handleDailyRewardClaim}
+        />
+      )}
 
       {/* Screen content */}
       <div className={`screen-wrapper ${isModal ? 'modal' : ''}`}>

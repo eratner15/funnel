@@ -19,7 +19,20 @@ const DEFAULT_USER = {
     notifications: true,
     language: 'en'
   },
-  onboarded: false
+  onboarded: false,
+  // Premium & Gamification
+  isPremium: false,
+  premiumSince: null,
+  dailyRewardDay: 0,
+  lastDailyReward: null,
+  streakFreezeAvailable: false,
+  streakFreezeUsedThisWeek: null,
+  totalStudyDays: 0,
+  totalCommentaries: 0,
+  totalReflections: 0,
+  joinDate: null,
+  weeklyXP: {},
+  xpMultiplier: 1
 };
 
 const STORAGE_KEY = 'daf_user';
@@ -47,6 +60,15 @@ function saveUser(user) {
 function getToday() {
   return new Date().toISOString().split('T')[0];
 }
+
+function getWeekKey() {
+  const d = new Date();
+  const jan1 = new Date(d.getFullYear(), 0, 1);
+  const week = Math.ceil(((d - jan1) / 86400000 + jan1.getDay() + 1) / 7);
+  return `${d.getFullYear()}-W${week}`;
+}
+
+const DAILY_REWARDS = [10, 10, 15, 15, 20, 20, 50]; // 7-day cycle
 
 function calculateLevel(xp) {
   if (xp >= 1500) return 6;
@@ -96,12 +118,24 @@ export function useUser() {
   }, [user.hearts]);
 
   const addXP = useCallback((amount) => {
+    let leveledUp = false;
+    let newLevelValue = null;
     setUser(prev => {
-      const newXP = prev.xp + amount;
+      // Apply XP multiplier (premium Shabbat bonus etc.)
+      const multiplied = Math.round(amount * prev.xpMultiplier);
+      const newXP = prev.xp + multiplied;
       const newLevel = calculateLevel(newXP);
-      return { ...prev, xp: newXP, level: newLevel };
+      if (newLevel > prev.level) {
+        leveledUp = true;
+        newLevelValue = newLevel;
+      }
+      // Track weekly XP
+      const weekKey = getWeekKey();
+      const weeklyXP = { ...prev.weeklyXP };
+      weeklyXP[weekKey] = (weeklyXP[weekKey] || 0) + multiplied;
+      return { ...prev, xp: newXP, level: newLevel, weeklyXP };
     });
-    return amount;
+    return { amount, leveledUp, newLevel: newLevelValue };
   }, []);
 
   const completeMission = useCallback((missionType, data = {}) => {
@@ -145,7 +179,7 @@ export function useUser() {
   }, []);
 
   const setName = useCallback((name) => {
-    setUser(prev => ({ ...prev, name, onboarded: true }));
+    setUser(prev => ({ ...prev, name, onboarded: true, joinDate: prev.joinDate || getToday() }));
   }, []);
 
   const addAchievement = useCallback((achievementId) => {
@@ -175,6 +209,112 @@ export function useUser() {
     return Object.values(todayMissions).reduce((sum, m) => sum + (m.xp || 0), 0);
   }, [user.missions]);
 
+  const upgradePremium = useCallback(() => {
+    setUser(prev => ({
+      ...prev,
+      isPremium: true,
+      premiumSince: getToday(),
+      streakFreezeAvailable: true,
+      xpMultiplier: 1
+    }));
+  }, []);
+
+  const useStreakFreeze = useCallback(() => {
+    setUser(prev => {
+      if (!prev.isPremium || !prev.streakFreezeAvailable) return prev;
+      return {
+        ...prev,
+        streakFreezeAvailable: false,
+        streakFreezeUsedThisWeek: getToday()
+      };
+    });
+  }, []);
+
+  const claimDailyReward = useCallback(() => {
+    const today = getToday();
+    let reward = { xp: 0, streakBonus: 0, day: 0 };
+    setUser(prev => {
+      if (prev.lastDailyReward === today) return prev;
+      const newDay = (prev.dailyRewardDay % 7) + 1;
+      const baseXP = DAILY_REWARDS[newDay - 1];
+      const streakBonus = prev.streak >= 7 ? 10 : prev.streak >= 3 ? 5 : 0;
+      const totalXP = baseXP + streakBonus;
+      reward = { xp: baseXP, streakBonus, day: newDay, total: totalXP };
+      const newXP = prev.xp + totalXP;
+      const weekKey = getWeekKey();
+      const weeklyXP = { ...prev.weeklyXP };
+      weeklyXP[weekKey] = (weeklyXP[weekKey] || 0) + totalXP;
+      return {
+        ...prev,
+        xp: newXP,
+        level: calculateLevel(newXP),
+        dailyRewardDay: newDay,
+        lastDailyReward: today,
+        totalStudyDays: prev.totalStudyDays + 1,
+        weeklyXP
+      };
+    });
+    return reward;
+  }, []);
+
+  const canClaimDailyReward = useCallback(() => {
+    return user.lastDailyReward !== getToday();
+  }, [user.lastDailyReward]);
+
+  const getDailyRewardInfo = useCallback(() => {
+    const nextDay = (user.dailyRewardDay % 7) + 1;
+    const baseXP = DAILY_REWARDS[nextDay - 1];
+    const streakBonus = user.streak >= 7 ? 10 : user.streak >= 3 ? 5 : 0;
+    return { day: nextDay, xp: baseXP, streakBonus, total: baseXP + streakBonus };
+  }, [user.dailyRewardDay, user.streak]);
+
+  const getWeeklyXP = useCallback(() => {
+    return user.weeklyXP[getWeekKey()] || 0;
+  }, [user.weeklyXP]);
+
+  const getStudyStats = useCallback(() => {
+    const daysSinceJoin = user.joinDate
+      ? Math.max(1, Math.floor((Date.now() - new Date(user.joinDate).getTime()) / 86400000))
+      : 1;
+    return {
+      totalXP: user.xp,
+      totalDays: user.totalStudyDays,
+      avgDailyXP: user.totalStudyDays > 0 ? Math.round(user.xp / user.totalStudyDays) : 0,
+      quizzesTaken: user.quizzesTaken,
+      reflections: user.reflections.length,
+      longestStreak: user.longestStreak,
+      currentStreak: user.streak,
+      daysSinceJoin,
+      weeklyXP: getWeeklyXP(),
+      achievements: user.achievements.length,
+      isPremium: user.isPremium
+    };
+  }, [user, getWeeklyXP]);
+
+  // Enable Shabbat XP boost on Fridays/Saturdays for premium users
+  useEffect(() => {
+    const day = new Date().getDay(); // 0=Sun, 5=Fri, 6=Sat
+    const isShabbat = day === 5 || day === 6;
+    if (user.isPremium && isShabbat && user.xpMultiplier !== 2) {
+      setUser(prev => ({ ...prev, xpMultiplier: 2 }));
+    } else if ((!user.isPremium || !isShabbat) && user.xpMultiplier !== 1) {
+      setUser(prev => ({ ...prev, xpMultiplier: 1 }));
+    }
+  }, [user.isPremium, user.xpMultiplier]);
+
+  // Reset streak freeze weekly (every Sunday)
+  useEffect(() => {
+    if (!user.isPremium) return;
+    const day = new Date().getDay();
+    if (day === 0 && user.streakFreezeUsedThisWeek) {
+      const usedDate = new Date(user.streakFreezeUsedThisWeek);
+      const today = new Date();
+      if (usedDate < today && today.getDay() === 0) {
+        setUser(prev => ({ ...prev, streakFreezeAvailable: true, streakFreezeUsedThisWeek: null }));
+      }
+    }
+  }, [user.isPremium, user.streakFreezeUsedThisWeek]);
+
   const resetUser = useCallback(() => {
     setUser({ ...DEFAULT_USER });
     localStorage.removeItem(STORAGE_KEY);
@@ -191,6 +331,14 @@ export function useUser() {
     addReflection,
     getTodayMissions,
     getDailyXP,
-    resetUser
+    resetUser,
+    // Premium & Gamification
+    upgradePremium,
+    useStreakFreeze,
+    claimDailyReward,
+    canClaimDailyReward,
+    getDailyRewardInfo,
+    getWeeklyXP,
+    getStudyStats
   };
 }

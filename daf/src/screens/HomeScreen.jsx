@@ -96,13 +96,39 @@ export default function HomeScreen({ userHook, navigate }) {
           })}
         </section>
 
+        {/* ── Leaderboard CTA ── */}
+        <Card className="leaderboard-cta fade-in-up" onClick={() => navigate('leaderboard')} style={{ animationDelay: '0.28s' }}>
+          <div className="leaderboard-cta-content">
+            <span className="leaderboard-cta-icon">🏆</span>
+            <div className="leaderboard-cta-text">
+              <span className="leaderboard-cta-title">Leaderboard</span>
+              <span className="leaderboard-cta-sub">See how you rank</span>
+            </div>
+            <span className="leaderboard-cta-arrow">&rsaquo;</span>
+          </div>
+        </Card>
+
         {/* ── Shabbat Widget ── */}
         <div className="fade-in-up" style={{ animationDelay: '0.32s' }}>
           <ShabbatWidget />
         </div>
 
+        {/* ── Premium CTA (free users only) ── */}
+        {!user.isPremium && (
+          <Card className="premium-home-cta fade-in-up" onClick={() => navigate('premium')} style={{ animationDelay: '0.34s' }}>
+            <div className="premium-home-content">
+              <span className="premium-home-icon">✡</span>
+              <div className="premium-home-text">
+                <span className="premium-home-title">Upgrade to Premium</span>
+                <span className="premium-home-sub">Unlimited hearts, 2x XP & more</span>
+              </div>
+              <span className="premium-home-arrow">&rsaquo;</span>
+            </div>
+          </Card>
+        )}
+
         {/* ── Quick Stats Row ── */}
-        <div className="quick-stats fade-in-up" style={{ animationDelay: '0.36s' }}>
+        <div className="quick-stats fade-in-up" style={{ animationDelay: '0.38s' }}>
           <Card className="stat-card">
             <span className="stat-value">{user.xp}</span>
             <span className="stat-label">Total XP</span>
