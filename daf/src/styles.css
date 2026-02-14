@@ -52,7 +52,7 @@
   /* ── Text ── */
   --text-primary: #f0ece4;
   --text-secondary: #a8a4a0;
-  --text-muted: #6b6866;
+  --text-muted: #837f7d;
   --text-inverse: #0a0a12;
 
   /* ── Borders ── */
@@ -773,13 +773,15 @@ select:focus-visible {
   justify-content: center;
   gap: 2px;
   flex: 1;
-  padding: var(--space-sm) 0;
+  padding: var(--space-base) 0;
+  min-height: 52px;
   color: var(--text-muted);
   font-size: var(--fs-xs);
   font-weight: var(--fw-medium);
   transition: color var(--transition-fast);
   position: relative;
   -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
 
 .tab-item .tab-icon {
@@ -852,8 +854,26 @@ select:focus-visible {
   cursor: pointer;
 }
 
+.card-interactive:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-strong);
+}
+
 .card-interactive:active {
   transform: scale(0.98);
+}
+
+/* ── Focus-visible (keyboard navigation) ── */
+.card-interactive:focus-visible,
+.mission-card:focus-visible,
+.quiz-option:focus-visible,
+.tab-item:focus-visible,
+.quiz-back-btn:focus-visible,
+.back-button:focus-visible,
+.gold-btn:focus-visible,
+.profile-action-card:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
 
 
@@ -1194,11 +1214,18 @@ select:focus-visible {
   border-radius: var(--radius-xl);
   padding: var(--space-base) var(--space-lg);
   border: 1px solid var(--border);
-  transition: background var(--transition-base), border-color var(--transition-base);
+  cursor: pointer;
+  transition: background var(--transition-base), border-color var(--transition-base),
+    transform var(--transition-fast);
 }
 
 .mission-card:hover {
   background: var(--bg-card-hover);
+  border-color: var(--border-strong);
+}
+
+.mission-card:active {
+  transform: scale(0.98);
 }
 
 .mission-card .mission-icon {
@@ -3172,7 +3199,7 @@ textarea.input-field {
 }
 
 .paths-section {
-  margin: 16px 0;
+  margin: var(--space-lg) 0;
 }
 
 .paths-grid {
@@ -3695,7 +3722,7 @@ textarea.input-field {
 }
 
 .missions-section {
-  margin: 16px 0;
+  margin: var(--space-lg) 0;
 }
 
 .quick-stats {
@@ -3744,7 +3771,19 @@ textarea.input-field {
   color: var(--text-secondary);
   font-size: 1.3rem;
   cursor: pointer;
-  padding: 4px 8px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: var(--radius-full);
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.quiz-back-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .quiz-progress {
@@ -3915,13 +3954,20 @@ textarea.input-field {
   color: var(--text-secondary);
   font-size: 1.4rem;
   cursor: pointer;
-  padding: 4px 8px;
-  transition: color 0.2s ease;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: var(--radius-full);
+  transition: color 0.2s ease, background 0.2s ease;
   line-height: 1;
 }
 
 .back-button:hover {
   color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 /* ============================================================
@@ -4570,7 +4616,7 @@ textarea.input-field {
    ============================================================ */
 
 .analytics-section {
-  margin: 16px 0;
+  margin: var(--space-lg) 0;
 }
 
 .analytics-grid {
