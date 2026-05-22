@@ -1,18 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 export default function XPToast({ amount, onDone }) {
-  const [visible, setVisible] = useState(true);
-
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisible(false);
-      setTimeout(onDone, 400);
-    }, 2000);
+    const timer = setTimeout(onDone, 2500);
     return () => clearTimeout(timer);
   }, [onDone]);
 
   return (
-    <div className={`xp-toast ${visible ? 'show' : 'hide'}`}>
+    <div className="xp-toast">
       <span className="xp-toast-icon">✡</span>
       <span className="xp-toast-text">+{amount} XP</span>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useUser } from './hooks/useUser';
 import TabBar from './components/TabBar';
 import XPToast from './components/XPToast';
@@ -29,6 +29,7 @@ export default function App() {
   const [levelUpModal, setLevelUpModal] = useState(null);
   const [showDailyReward, setShowDailyReward] = useState(false);
   const [urgencyBanners, setUrgencyBanners] = useState([]);
+  const promoRolled = useRef(false);
 
   // Show daily reward on first visit of the day
   useEffect(() => {
@@ -67,10 +68,10 @@ export default function App() {
       });
     }
 
-    // Premium promo (show occasionally for free users with some engagement)
-    if (!user.isPremium && user.xp >= 50 && user.quizzesTaken >= 1 && !banners.length) {
-      const showPromo = Math.random() < 0.3; // 30% chance
-      if (showPromo) {
+    // Premium promo (30% chance, rolled once per session)
+    if (!user.isPremium && user.xp >= 50 && user.quizzesTaken >= 1 && !banners.length && !promoRolled.current) {
+      promoRolled.current = true;
+      if (Math.random() < 0.3) {
         banners.push({
           id: 'premium-promo',
           type: 'premium-promo',
@@ -153,7 +154,7 @@ export default function App() {
       return <VerseScreen userHook={userHook} awardXP={awardXP} onBack={goBack} />;
     }
     if (activeScreen === 'challenge') {
-      return <QuizScreen userHook={userHook} awardXP={awardXP} onBack={goBack} />;
+      return <QuizScreen userHook={userHook} awardXP={awardXP} onBack={goBack} missionType="challenge" />;
     }
     if (activeScreen === 'premium') {
       return <PremiumScreen userHook={userHook} onBack={goBack} />;

@@ -78,6 +78,7 @@ export default function ChavrutaScreen({ userHook, awardXP, onBack }) {
     setHasCompleted(true);
     awardXP(30);
     userHook.completeMission('chavruta', { xp: 30 });
+    userHook.addAchievement('first_chavruta');
     onBack();
   };
 

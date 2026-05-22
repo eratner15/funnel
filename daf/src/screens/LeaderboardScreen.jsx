@@ -64,7 +64,7 @@ export default function LeaderboardScreen({ userHook, onBack }) {
   const userEntry = leaderboard.find((e) => e.isUser);
 
   // Podium display order: 2nd, 1st, 3rd
-  const podiumOrder = [top3[1], top3[0], top3[2]];
+  const podiumOrder = top3.length >= 3 ? [top3[1], top3[0], top3[2]] : top3;
 
   return (
     <div className="screen leaderboard-screen">

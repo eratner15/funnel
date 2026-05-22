@@ -1,7 +1,8 @@
 import React from 'react';
 import GoldButton from '../components/GoldButton';
+import { DAILY_REWARDS } from '../hooks/useUser';
 
-const DAY_REWARDS = [5, 5, 10, 10, 10, 15, 50];
+const DAY_REWARDS = DAILY_REWARDS;
 
 export default function DailyRewardModal({ day, xpReward, streakBonus, onClaim }) {
   const total = xpReward + (streakBonus || 0);

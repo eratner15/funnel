@@ -68,6 +68,13 @@ export const ACHIEVEMENTS = [
     condition: 'Complete 1 verse study'
   },
   {
+    id: 'first_chavruta',
+    title: 'Study Partner',
+    description: 'Have your first AI chavruta conversation',
+    icon: '🤝',
+    condition: 'Complete 1 chavruta session'
+  },
+  {
     id: 'first_commentary',
     title: 'Learning with the Sages',
     description: 'Read your first commentary session',

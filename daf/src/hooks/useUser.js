@@ -63,12 +63,12 @@ function getToday() {
 
 function getWeekKey() {
   const d = new Date();
-  const jan1 = new Date(d.getFullYear(), 0, 1);
-  const week = Math.ceil(((d - jan1) / 86400000 + jan1.getDay() + 1) / 7);
-  return `${d.getFullYear()}-W${week}`;
+  const daysSinceEpoch = Math.floor(d.getTime() / 86400000);
+  const weekNum = Math.floor((daysSinceEpoch + 3) / 7); // weeks since epoch, aligned to Monday
+  return `W${weekNum}`;
 }
 
-const DAILY_REWARDS = [10, 10, 15, 15, 20, 20, 50]; // 7-day cycle
+export const DAILY_REWARDS = [10, 10, 15, 15, 20, 20, 50]; // 7-day cycle
 
 function calculateLevel(xp) {
   if (xp >= 1500) return 6;
@@ -100,15 +100,18 @@ export function useUser() {
   // Heart regeneration (1 heart every 30 minutes, max 3)
   useEffect(() => {
     if (user.hearts >= 3) return;
+    const REGEN_MS = 30 * 60 * 1000;
     const interval = setInterval(() => {
       setUser(prev => {
+        if (prev.hearts >= 3) return prev;
         const elapsed = Date.now() - prev.heartsLastRegen;
-        const heartsToRegen = Math.floor(elapsed / (30 * 60 * 1000));
+        const heartsToRegen = Math.floor(elapsed / REGEN_MS);
         if (heartsToRegen > 0) {
+          const newHearts = Math.min(3, prev.hearts + heartsToRegen);
           return {
             ...prev,
-            hearts: Math.min(3, prev.hearts + heartsToRegen),
-            heartsLastRegen: Date.now()
+            hearts: newHearts,
+            heartsLastRegen: prev.heartsLastRegen + heartsToRegen * REGEN_MS
           };
         }
         return prev;
@@ -121,7 +124,6 @@ export function useUser() {
     let leveledUp = false;
     let newLevelValue = null;
     setUser(prev => {
-      // Apply XP multiplier (premium Shabbat bonus etc.)
       const multiplied = Math.round(amount * prev.xpMultiplier);
       const newXP = prev.xp + multiplied;
       const newLevel = calculateLevel(newXP);
@@ -129,11 +131,15 @@ export function useUser() {
         leveledUp = true;
         newLevelValue = newLevel;
       }
-      // Track weekly XP
       const weekKey = getWeekKey();
-      const weeklyXP = { ...prev.weeklyXP };
-      weeklyXP[weekKey] = (weeklyXP[weekKey] || 0) + multiplied;
-      return { ...prev, xp: newXP, level: newLevel, weeklyXP };
+      const weeklyXP = {};
+      weeklyXP[weekKey] = ((prev.weeklyXP || {})[weekKey] || 0) + multiplied;
+      // XP milestone achievements
+      const achievements = [...prev.achievements];
+      if (newXP >= 100 && !achievements.includes('xp_100')) achievements.push('xp_100');
+      if (newXP >= 500 && !achievements.includes('xp_500')) achievements.push('xp_500');
+      if (newXP >= 1000 && !achievements.includes('xp_1000')) achievements.push('xp_1000');
+      return { ...prev, xp: newXP, level: newLevel, weeklyXP, achievements };
     });
     return { amount, leveledUp, newLevel: newLevelValue };
   }, []);
@@ -145,27 +151,48 @@ export function useUser() {
       const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
 
       let newStreak = prev.streak;
-      // Only bump streak on first mission of the day
       if (prev.lastStudyDate !== today) {
         if (prev.lastStudyDate === yesterday) {
-          newStreak = prev.streak + 1;  // Consecutive day
+          newStreak = prev.streak + 1;
         } else {
-          newStreak = 1;  // First session or missed days
+          newStreak = 1;
         }
+      }
+
+      const updatedMissions = {
+        ...todayMissions,
+        [missionType]: { done: true, ...data }
+      };
+
+      // Check achievements
+      const achievements = [...prev.achievements];
+      if (newStreak >= 3 && !achievements.includes('streak_3')) achievements.push('streak_3');
+      if (newStreak >= 7 && !achievements.includes('streak_7')) achievements.push('streak_7');
+      if (newStreak >= 30 && !achievements.includes('streak_30')) achievements.push('streak_30');
+
+      // All daily missions completed
+      const MISSION_TYPES = ['quiz', 'verse', 'commentary', 'chavruta', 'challenge'];
+      const allDone = MISSION_TYPES.every(t => updatedMissions[t]?.done);
+      if (allDone && !achievements.includes('all_missions')) achievements.push('all_missions');
+
+      // Parsha completion: quiz + verse + commentary + chavruta done today
+      const coreTypes = ['quiz', 'verse', 'commentary', 'chavruta'];
+      const parshaComplete = coreTypes.every(t => updatedMissions[t]?.done);
+      const completedParshiyot = [...prev.completedParshiyot];
+      if (parshaComplete && !completedParshiyot.includes(today)) {
+        completedParshiyot.push(today);
+        if (!achievements.includes('parsha_complete')) achievements.push('parsha_complete');
       }
 
       return {
         ...prev,
-        missions: {
-          ...prev.missions,
-          [today]: {
-            ...todayMissions,
-            [missionType]: { done: true, ...data }
-          }
-        },
+        missions: { ...prev.missions, [today]: updatedMissions },
         lastStudyDate: today,
         streak: newStreak,
-        longestStreak: Math.max(prev.longestStreak, newStreak)
+        longestStreak: Math.max(prev.longestStreak, newStreak),
+        totalStudyDays: prev.lastStudyDate !== today ? prev.totalStudyDays + 1 : prev.totalStudyDays,
+        achievements,
+        completedParshiyot
       };
     });
   }, []);
@@ -242,8 +269,8 @@ export function useUser() {
       reward = { xp: baseXP, streakBonus, day: newDay, total: totalXP };
       const newXP = prev.xp + totalXP;
       const weekKey = getWeekKey();
-      const weeklyXP = { ...prev.weeklyXP };
-      weeklyXP[weekKey] = (weeklyXP[weekKey] || 0) + totalXP;
+      const weeklyXP = {};
+      weeklyXP[weekKey] = ((prev.weeklyXP || {})[weekKey] || 0) + totalXP;
       return {
         ...prev,
         xp: newXP,

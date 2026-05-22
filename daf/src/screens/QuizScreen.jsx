@@ -14,7 +14,7 @@ function getQuestions() {
   return bank.slice(0, 5);
 }
 
-export default function QuizScreen({ userHook, awardXP, onBack }) {
+export default function QuizScreen({ userHook, awardXP, onBack, missionType = 'quiz' }) {
   const questions = getQuestions();
   const totalQuestions = questions.length;
 
@@ -22,16 +22,12 @@ export default function QuizScreen({ userHook, awardXP, onBack }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState(0);
-  const [hearts, setHearts] = useState(userHook.user.hearts);
+  const [quizHearts, setQuizHearts] = useState(userHook.user.hearts);
   const [quizComplete, setQuizComplete] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [hasFinished, setHasFinished] = useState(false);
   const explanationTimerRef = useRef(null);
-
-  // Sync hearts with userHook when they change externally
-  useEffect(() => {
-    setHearts(userHook.user.hearts);
-  }, [userHook.user.hearts]);
+  const hearts = quizHearts;
 
   // Cleanup explanation timer on unmount
   useEffect(() => {
@@ -73,7 +69,7 @@ export default function QuizScreen({ userHook, awardXP, onBack }) {
       setScore((s) => s + 1);
     } else {
       userHook.loseHeart();
-      setHearts((h) => Math.max(0, h - 1));
+      setQuizHearts((h) => Math.max(0, h - 1));
     }
 
     // Reveal explanation after a short delay
@@ -97,7 +93,7 @@ export default function QuizScreen({ userHook, awardXP, onBack }) {
     setHasFinished(true);
     const xpEarned = score * BASE_XP_PER_CORRECT;
     awardXP(xpEarned);
-    userHook.completeMission('quiz', { score, xp: xpEarned });
+    userHook.completeMission(missionType, { score, xp: xpEarned });
     userHook.incrementQuizzes();
     userHook.addAchievement('first_quiz');
     onBack();

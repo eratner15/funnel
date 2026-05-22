@@ -1,0 +1,19 @@
+{
+  "name": "DAF — Torah Study, Reimagined",
+  "short_name": "DAF",
+  "description": "Duolingo for Torah. Daily quizzes, commentary, and AI chavruta study.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a12",
+  "theme_color": "#0a0a12",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "lifestyle"]
+}

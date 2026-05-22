@@ -2,7 +2,7 @@ import React from 'react';
 import { useShabbat } from '../hooks/useShabbat';
 
 export default function ShabbatWidget() {
-  const { countdown, isShabbat } = useShabbat();
+  const { countdown, isShabbat, dayName } = useShabbat();
 
   return (
     <div className="shabbat-widget">
@@ -12,7 +12,7 @@ export default function ShabbatWidget() {
           {isShabbat ? 'Shabbat Shalom!' : 'Candle Lighting'}
         </div>
         <div className="shabbat-time">
-          {isShabbat ? 'Rest and reflect' : `Friday at sundown — ${countdown}`}
+          {isShabbat ? 'Rest and reflect' : `${dayName} at sundown — ${countdown}`}
         </div>
       </div>
     </div>

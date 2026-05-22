@@ -4,7 +4,7 @@ import GoldButton from '../components/GoldButton';
 import { getTreeStage } from '../data/tree';
 
 export default function ProfileScreen({ userHook, navigate }) {
-  const { user, getStudyStats, resetUser } = userHook;
+  const { user, getStudyStats } = userHook;
   const stage = getTreeStage(user.xp);
   const initial = user.name ? user.name.charAt(0).toUpperCase() : '?';
   const stats = getStudyStats();

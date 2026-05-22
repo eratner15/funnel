@@ -593,7 +593,7 @@ select:focus-visible {
   font-family: var(--font-hebrew);
   direction: rtl;
   text-align: right;
-  unicode-bidi: bidi-override;
+  unicode-bidi: isolate;
   line-height: var(--lh-relaxed);
 }
 
@@ -601,7 +601,7 @@ select:focus-visible {
   font-family: var(--font-hebrew);
   direction: rtl;
   text-align: center;
-  unicode-bidi: bidi-override;
+  unicode-bidi: isolate;
   font-size: var(--fs-3xl);
   font-weight: var(--fw-bold);
   color: var(--gold);
@@ -613,7 +613,7 @@ select:focus-visible {
   font-family: var(--font-hebrew);
   direction: rtl;
   text-align: right;
-  unicode-bidi: bidi-override;
+  unicode-bidi: isolate;
   font-size: var(--fs-sm);
   line-height: var(--lh-relaxed);
 }
